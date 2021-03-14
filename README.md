@@ -8,6 +8,8 @@ Spotify API を利用して、何かしらを作ります。
 
 - https://developer.spotify.com/documentation/web-api/quick-start/
 
+- https://qiita.com/shirok/items/ba5c45511498b75aac27
+
 - ログインできない:
   - spotify App にコールバックURLを設定する必要がある
     - https://github.com/spotify/web-api-auth-examples/issues/41

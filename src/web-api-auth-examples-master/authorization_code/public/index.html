@@ -27,6 +27,8 @@
         </div>
         <div id="oauth">
         </div>
+        <div id="user-playlist">
+        </div>
         <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
       </div>
     </div>
@@ -59,6 +61,17 @@
       </dl>
     </script>
 
+
+    <script id="user-playlist-template" type="text/x-handlebars-template">
+      <div class="media">
+        <div class="media-body">
+          <dl class="dl-horizontal">
+            <dt>Display name</dt><dd class="clearfix">{{name}}</dd>
+          </dl>
+        </div>
+      </div>
+    </script>
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script>
@@ -81,6 +94,10 @@
         var userProfileSource = document.getElementById('user-profile-template').innerHTML,
             userProfileTemplate = Handlebars.compile(userProfileSource),
             userProfilePlaceholder = document.getElementById('user-profile');
+
+        var userPlaylistSource = document.getElementById('user-playlist-template').innerHTML,
+            userPlaylistTemplate = Handlebars.compile(userPlaylistSource),
+            userPlaylistPlaceholder = document.getElementById('user-playlist');
 
         var oauthSource = document.getElementById('oauth-template').innerHTML,
             oauthTemplate = Handlebars.compile(oauthSource),
@@ -114,6 +131,16 @@
                   $('#loggedin').show();
                 }
             });
+
+            $.ajax({
+                url: 'https://api.spotify.com/v1/me/playlists',
+                headers: {
+                  'Authorization': 'Bearer ' + access_token
+                },
+                success: function(response) {
+                  userPlaylistPlaceholder.innerHTML = userPlaylistTemplate(response.items[0]);
+                }
+            });
           } else {
               // render initial screen
               $('#login').show();
@@ -139,4 +166,3 @@
     </script>
   </body>
 </html>
-
