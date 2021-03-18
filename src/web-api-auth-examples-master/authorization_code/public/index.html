@@ -133,12 +133,15 @@
             });
 
             $.ajax({
-                url: 'https://api.spotify.com/v1/me/playlists',
+                url: 'https://api.spotify.com/v1/me/player/recently-played',
                 headers: {
                   'Authorization': 'Bearer ' + access_token
                 },
                 success: function(response) {
                   userPlaylistPlaceholder.innerHTML = userPlaylistTemplate(response.items[0]);
+                },
+                error: function(response) {
+                  console.log(response);
                 }
             });
           } else {
