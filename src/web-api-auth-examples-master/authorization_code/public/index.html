@@ -63,10 +63,13 @@
 
 
     <script id="user-playlist-template" type="text/x-handlebars-template">
+      <h2>Recently Played</h2>
       <div class="media">
         <div class="media-body">
           <dl class="dl-horizontal">
-            <dt>Display name</dt><dd class="clearfix">{{name}}</dd>
+            <dt>title</dt><dd class="clearfix">{{name}}</dd>
+            <dt>album</dt><dd class="clearfix">{{album.name}}</dd>
+            <dt>artist</dt><dd class="clearfix">{{artists.[0].name}}</dd>
           </dl>
         </div>
       </div>
@@ -133,12 +136,12 @@
             });
 
             $.ajax({
-                url: 'https://api.spotify.com/v1/me/player/recently-played',
+                url: 'https://api.spotify.com/v1/me/player/recently-played?limit=1',
                 headers: {
                   'Authorization': 'Bearer ' + access_token
                 },
                 success: function(response) {
-                  userPlaylistPlaceholder.innerHTML = userPlaylistTemplate(response.items[0]);
+                  userPlaylistPlaceholder.innerHTML = userPlaylistTemplate(response.items[0].track);
                 },
                 error: function(response) {
                   console.log(response);
