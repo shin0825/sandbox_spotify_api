@@ -144,8 +144,9 @@ app.get('/refresh_token', function(req, res) {
 });
 
 app.get('/get-music-profile', function (req, res) {
-  var id = '4mlOecyjHqvRovTzMfTDk8';
+  var id = req.query.id;
   var access_token = req.query.access_token;
+  console.log('id');
 
   var options = {
   url: `https://api.spotify.com/v1/tracks/${id}`,

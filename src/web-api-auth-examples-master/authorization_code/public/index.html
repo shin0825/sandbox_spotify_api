@@ -188,7 +188,7 @@
           document.getElementById('music-profile').addEventListener('click', function() {
             let musicId = document.getElementById('music-url').value;
             $.ajax({
-              url: `/get-music-profile`,
+              url: `/get-music-profile?id=${musicId}`,
               data: {
                 'access_token': access_token
               }
