@@ -31,6 +31,10 @@
         </div>
         <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
       </div>
+      <input type="text" class="text" id="music-url"/>
+      <button class="btn btn-default" id="music-profile">get music profile</button>
+      <div id="get-music">
+      </div>
     </div>
 
     <script id="user-profile-template" type="text/x-handlebars-template">
@@ -75,6 +79,15 @@
       </div>
     </script>
 
+    <script id="get-music-template" type="text/x-handlebars-template">
+      <h2>Music Info</h2>
+      <dl class="dl-horizontal">
+        <dt>title</dt><dd class="clearfix">{{name}}</dd>
+        <dt>album</dt><dd class="clearfix">{{album.name}}</dd>
+        <dt>artist</dt><dd class="clearfix">{{artists.[0].name}}</dd>
+      </dl>
+    </script>
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script>
@@ -101,6 +114,10 @@
         var userPlaylistSource = document.getElementById('user-playlist-template').innerHTML,
             userPlaylistTemplate = Handlebars.compile(userPlaylistSource),
             userPlaylistPlaceholder = document.getElementById('user-playlist');
+
+        var musicProfileSource = document.getElementById('get-music-template').innerHTML,
+            musicProfileTemplate = Handlebars.compile(musicProfileSource),
+            musicProfilePlaceholder = document.getElementById('get-music');
 
         var oauthSource = document.getElementById('oauth-template').innerHTML,
             oauthTemplate = Handlebars.compile(oauthSource),
@@ -165,6 +182,18 @@
                 access_token: access_token,
                 refresh_token: refresh_token
               });
+            });
+          }, false);
+
+          document.getElementById('music-profile').addEventListener('click', function() {
+            let musicId = document.getElementById('music-url').value;
+            $.ajax({
+              url: `/get-music-profile`,
+              data: {
+                'access_token': access_token
+              }
+            }).done(function(response) {
+              musicProfilePlaceholder.innerHTML = musicProfileTemplate(response.body);
             });
           }, false);
         }

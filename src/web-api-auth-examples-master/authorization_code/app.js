@@ -143,5 +143,24 @@ app.get('/refresh_token', function(req, res) {
   });
 });
 
+app.get('/get-music-profile', function (req, res) {
+  var id = '4mlOecyjHqvRovTzMfTDk8';
+  var access_token = req.query.access_token;
+
+  var options = {
+  url: `https://api.spotify.com/v1/tracks/${id}`,
+  headers: { 'Authorization': 'Bearer ' + access_token },
+  json: true
+  };
+
+  // use the access token to access the Spotify Web API
+  request.get(options, function(error, response, body) {
+    console.log(body);
+    res.send({
+      'body': body
+    });
+  });
+});
+
 console.log('Listening on 8888');
 app.listen(8888);
