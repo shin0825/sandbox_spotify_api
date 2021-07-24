@@ -142,24 +142,41 @@ app.get('/refresh_token', function(req, res) {
     }
   });
 });
-
+// 5MueU1zNabzwtYbeqvyDKg
 app.get('/get-music-profile', function (req, res) {
-  var id = req.query.id;
-  var access_token = req.query.access_token;
-  console.log('id');
-
-  var options = {
-  url: `https://api.spotify.com/v1/tracks/${id}`,
-  headers: { 'Authorization': 'Bearer ' + access_token },
-  json: true
+  
+  var authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    headers: { 'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64')) },
+    form: {
+      grant_type: 'client_credentials'
+    },
+    json: true
   };
+  console.log(authOptions);
 
-  // use the access token to access the Spotify Web API
-  request.get(options, function(error, response, body) {
-    console.log(body);
-    res.send({
-      'body': body
-    });
+  request.post(authOptions, function(error, response, body) {
+    console.log('result:' + response.statusCode)
+    if (!error && response.statusCode === 200) {
+      var access_token = body.access_token;
+
+      var id = req.query.id;
+      console.log('id');
+    
+      var options = {
+        url: `https://api.spotify.com/v1/tracks/${id}`,
+        headers: { 'Authorization': 'Bearer ' + access_token },
+        json: true
+      };
+    
+      // use the access token to access the Spotify Web API
+      request.get(options, function(error, response, body) {
+        console.log(body);
+        res.send({
+          'body': body
+        });
+      });
+    }
   });
 });
 
